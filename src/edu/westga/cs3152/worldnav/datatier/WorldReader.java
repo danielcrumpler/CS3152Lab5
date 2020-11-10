@@ -1,8 +1,12 @@
 package edu.westga.cs3152.worldnav.datatier;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.zip.DataFormatException;
 
+import edu.westga.cs3152.worldnav.model.Location;
+import edu.westga.cs3152.worldnav.model.Node;
 import edu.westga.cs3152.worldnav.model.World;
 
 /**
@@ -51,12 +55,37 @@ public class WorldReader {
 	 * @throws DataFormatException if the format of the specified file is incorrect
 	 */
 	public World loadWorld(String filename) throws IOException, DataFormatException {
-		if (filename == null) {
-			throw new IllegalArgumentException("filename cannot be null");
+		if (filename == null || filename.isEmpty()) {
+			throw new IllegalArgumentException("filename cannot be null or empty");
 		}
-		if (filename.isEmpty()) {
-			throw new IllegalArgumentException("filename cannot be empty");
+		File file = new File(filename);
+		World world = new World();
+		int lineCount = 0;
+		int loopCount = 0;
+		String currLocationName = "";
+		try (Scanner input = new Scanner(file)) {
+			while (input.hasNextLine()) {
+				String line = input.nextLine();
+				if (lineCount == 0) {
+					world.setName(line);
+				} else if (lineCount == 1) {
+					currLocationName = line;
+				} else if (lineCount == 2) {
+					Location currLocation = new Location(currLocationName, line);
+					world.getWorldGraph().addNode(new Node<Location>(currLocation));
+					if (loopCount == 0) {
+						world.setStartNode(currLocationName);
+					}
+				} else if (lineCount == 3) {
+					String[] info = line.split(",");
+					for (String curr : info) {
+						world.getWorldGraph().addAdjacentNode(currLocationName, curr);
+					}
+					lineCount -= 3;
+				}
+				lineCount++;
+			}
 		}
-		return null;
+		return world;
 	}
 }

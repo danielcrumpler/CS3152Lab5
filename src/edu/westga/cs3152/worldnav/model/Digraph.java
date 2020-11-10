@@ -1,5 +1,6 @@
 package edu.westga.cs3152.worldnav.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -13,7 +14,11 @@ import java.util.Collection;
 public class Digraph<T> {
 
 	private Collection<Node<T>> collection;
-		
+	
+	public Digraph() {
+		this.collection = new ArrayList<Node<T>>();
+	}
+	
 	/**
 	 * Adds a node to the collection.
 	 * 
@@ -51,7 +56,15 @@ public class Digraph<T> {
 	 *         specified node
 	 */
 	public Collection<Node<T>> getAdjacentNodes(Node<T> node) {
-		return node.getConnections();
+		Collection<Node<T>> nodes = new ArrayList<Node<T>>();
+		for (String currString : node.getConnections()) {
+			for (Node<T> currNode : this.collection) {
+				if (currNode.getLocation().getName().equals(currString)) {
+					nodes.add(currNode);
+				}
+			}
+		}
+		return nodes;
 	}
 	
 	/**
@@ -63,7 +76,7 @@ public class Digraph<T> {
 	 * @param adjacentNode node to be added to the main node
 	 * @return true if node is added successfully
 	 */
-	public boolean addAdjacentNode(Node<T> mainNode, Node<T> adjacentNode) {
+	public boolean addAdjacentNode(String mainNode, String adjacentNode) {
 		if (mainNode == null) {
 			throw new IllegalArgumentException("The mainNode cannot be null.");
 		}
@@ -71,12 +84,8 @@ public class Digraph<T> {
 			throw new IllegalArgumentException("The adjacentNode cannot be null.");
 		}
 		for (Node<T> currNode : this.collection) {
-			if (currNode.equals(mainNode)) {
-				for (Node<T> checkNode : this.collection) {
-					if (checkNode.equals(adjacentNode)) {
-						return currNode.addConnection(checkNode);
-					}
-				}
+			if (currNode.getLocation().getName().equals(mainNode)) {
+				return currNode.addConnection(adjacentNode);
 			}
 		}
 		return false;

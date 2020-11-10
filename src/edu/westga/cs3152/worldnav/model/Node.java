@@ -12,8 +12,21 @@ import java.util.ArrayList;
  */
 public class Node<T> {
 	private T value;
-	private ArrayList<Node<T>> connections;
+	private Location location;
+	private ArrayList<String> connections;
 
+	/**
+	 * Instantiates a new node
+	 * 
+	 * @pre none
+	 * @post getLocation() == location
+	 * @param location the location
+	 */
+	public Node(Location location) {
+		this.location = location;
+		this.connections = new ArrayList<String>();
+	}
+	
 	/**
 	 * Gets the value of this node.
 	 *
@@ -32,7 +45,7 @@ public class Node<T> {
 	 * @post none
 	 * @return the collection of adjacent nodes
 	 */
-	public ArrayList<Node<T>> getConnections() {
+	public ArrayList<String> getConnections() {
 		return this.connections;
 	}
 
@@ -42,9 +55,18 @@ public class Node<T> {
 	 * @pre node != null
 	 * @post getConnections() += 1
 	 * @return true if added successfully
-	 * @param node node to be added
+	 * @param nodeName node to be added
 	 */
-	public boolean addConnection(Node<T> node) {
-		return this.connections.add(node);
+	public boolean addConnection(String nodeName) {
+		return this.connections.add(nodeName);
+	}
+
+	/**
+	 * Gets the location
+	 * 
+	 * @return the location
+	 */
+	public Location getLocation() {
+		return this.location;
 	}
 }

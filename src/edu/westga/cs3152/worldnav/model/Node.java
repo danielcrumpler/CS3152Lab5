@@ -26,7 +26,7 @@ public class Node<T> {
 		this.location = location;
 		this.connections = new ArrayList<String>();
 	}
-	
+
 	/**
 	 * Gets the value of this node.
 	 *

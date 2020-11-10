@@ -41,7 +41,7 @@ public class WorldController {
 	 * Instantiates a new code behind.
 	 */
 	public WorldController() {
-		this.filename = "House.txt";
+		this.filename = "Island.txt";
 		try {
 			this.world = (new WorldReader()).loadWorld(this.filename);
 		} catch (IOException | DataFormatException exc) {
@@ -74,7 +74,7 @@ public class WorldController {
 			descriptionText.setText("The world could not be loaded from file.");
 		} else {
 			this.currentNode = location;
-			descriptionText.setText(this.currentNode.getValue().getDescription());
+			descriptionText.setText(this.currentNode.getLocation().getDescription());
 			this.updateButtons();
 		}
 	}
@@ -86,7 +86,7 @@ public class WorldController {
 			this.setMinWidth(250);
 			this.setFont(Font.font(16));
 			this.location = location;
-			this.setText(location.getValue().getName());
+			this.setText(location.getLocation().getName());
 			this.setOnAction(event -> {
 				WorldController.this.updateCurrentLocation(this.location);
 			});

@@ -24,7 +24,7 @@ public class World {
 		this.worldGraph = new Digraph<Location>();
 		this.startNode = null;
 	}
-	
+
 	/**
 	 * Instantiates a new world
 	 * 
@@ -136,7 +136,7 @@ public class World {
 	 */
 	public Node<Location> getNode(String locationName) {
 		for (Node<Location> node : this.worldGraph.getNodes()) {
-			if (locationName.equals(node.getValue().getName())) {
+			if (locationName.equals(node.getLocation().getName())) {
 				return node;
 			}
 		}
